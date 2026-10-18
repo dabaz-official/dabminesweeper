@@ -90,7 +90,9 @@ export function Game({ config, difficulty, bestTime, onWin }: GameProps) {
       <div className="meta-row">
         <p className={`status-pill status-${status}`}>
           <span className="status-dot" aria-hidden="true" />
-          <span aria-live="polite">{statusText}</span>
+          <span className="status-text" aria-live="polite">
+            {statusText}
+          </span>
         </p>
         <p className="meta-stats">
           <span className="meta-progress">

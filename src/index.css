@@ -621,12 +621,17 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: wrap;
+  /* Deliberately never wraps and keeps a fixed height: this row sits above the
+     board, and the board is sized from the space it has. If the status or
+     progress text grew the row, every click would resize the board. */
+  flex-wrap: nowrap;
+  min-height: 32px;
   padding: 0 4px;
 }
 
 .status-pill {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 8px;
   margin: 0;
@@ -637,7 +642,13 @@ button {
   color: var(--text-muted);
   font-size: 0.79rem;
   font-weight: 550;
+  white-space: nowrap;
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.status-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-dot {
@@ -683,12 +694,16 @@ button {
 
 .meta-stats {
   display: flex;
+  flex: 0 1 auto;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   margin: 0;
+  overflow: hidden;
   font-size: 0.75rem;
   color: var(--text-dim);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .meta-divider {
@@ -1024,13 +1039,18 @@ kbd {
     justify-content: flex-end;
   }
 
-  .meta-row {
-    justify-content: center;
-  }
-
   .footer-hint {
     order: 3;
     flex-basis: 100%;
+  }
+}
+
+/* Very narrow screens: drop the record chip so the status and progress still fit
+   on the single, fixed-height status row. */
+@media (max-width: 520px) {
+  .meta-best,
+  .meta-divider {
+    display: none;
   }
 }
 
