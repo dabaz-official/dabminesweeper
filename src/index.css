@@ -268,21 +268,12 @@ button {
   min-width: 0;
 }
 
+/* The header mark is the transparent logo asset itself, sized to the header. */
 .brand-mark {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 32px;
   height: 32px;
   flex: none;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--lavender-line);
-  background: var(--lavender);
-  color: var(--primary);
-}
-
-.brand-icon {
-  width: 18px;
-  height: 18px;
 }
 
 .brand-title {

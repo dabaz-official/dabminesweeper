@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CustomForm } from './components/CustomForm'
 import { DifficultyPicker } from './components/DifficultyPicker'
 import { Game } from './components/Game'
-import { MineIcon, MoonIcon, SlidersIcon, SunIcon } from './components/Icons'
+import { MoonIcon, SlidersIcon, SunIcon } from './components/Icons'
 import { DEFAULT_CONFIG, PRESET_BY_KEY, clampConfig, configKey } from './game/config'
 import { loadBestTimes, saveBestTimes } from './game/storage'
 import type { BestTimes, DifficultyKey, GameConfig, PresetKey } from './game/types'
@@ -69,10 +69,8 @@ export default function App() {
       <header className="app-header">
         <div className="app-header-inner">
           <div className="brand">
-            <span className="brand-mark">
-              <MineIcon className="brand-icon" />
-            </span>
-            <h1 className="brand-title">Minesweeper</h1>
+            <img className="brand-mark" src="/header-logo.png" alt="" width={32} height={32} />
+            <h1 className="brand-title">DabMinesweeper</h1>
           </div>
 
           <div className="header-controls">
