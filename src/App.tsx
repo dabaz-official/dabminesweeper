@@ -10,6 +10,9 @@ import { useTheme } from './hooks/useTheme'
 
 const DEFAULT_CUSTOM: GameConfig = { rows: 12, cols: 12, mines: 24 }
 
+/** Read from the real clock when the app loads, so the copyright needs no editing. */
+const CURRENT_YEAR = new Date().getFullYear()
+
 export default function App() {
   const { theme, toggle: toggleTheme } = useTheme()
   const [difficulty, setDifficulty] = useState<DifficultyKey>('beginner')
@@ -77,8 +80,8 @@ export default function App() {
             <button
               type="button"
               className={`button button-secondary custom-trigger${customOpen ? ' is-open' : ''}`}
-              aria-expanded={customOpen}
-              onClick={() => setCustomOpen((open) => !open)}
+              aria-haspopup="dialog"
+              onClick={() => setCustomOpen(true)}
             >
               <SlidersIcon className="button-icon" />
               Custom
@@ -100,32 +103,11 @@ export default function App() {
         </div>
       </header>
 
+      {customOpen ? (
+        <CustomForm initial={customSeed} onApply={applyCustom} onCancel={() => setCustomOpen(false)} />
+      ) : null}
+
       <main className="app-main">
-        <section className="page-hero">
-          <div className="hero-copy">
-            <p className="hero-eyebrow">The classic, recalibrated</p>
-            <p className="hero-title">Clear the board. Keep your calm.</p>
-            <p className="hero-subtitle">
-              Three difficulties, custom fields and a board that always fits. Your first click is
-              always safe.
-            </p>
-          </div>
-          <div className="hero-art" aria-hidden="true">
-            <span className="hero-note hero-note-peach" />
-            <span className="hero-note hero-note-rose" />
-            <span className="hero-note hero-note-mint" />
-            <span className="hero-note hero-note-yellow" />
-          </div>
-        </section>
-
-        {customOpen ? (
-          <CustomForm
-            initial={customSeed}
-            onApply={applyCustom}
-            onCancel={() => setCustomOpen(false)}
-          />
-        ) : null}
-
         <Game
           key={gameKey}
           config={config}
@@ -145,9 +127,7 @@ export default function App() {
         </p>
       </main>
 
-      <footer className="app-footer">
-        Notion-inspired interface — built with Vite, React and TypeScript
-      </footer>
+      <footer className="app-footer">© {CURRENT_YEAR} DabAZ.</footer>
     </div>
   )
 }

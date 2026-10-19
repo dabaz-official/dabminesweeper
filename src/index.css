@@ -1,9 +1,9 @@
 /* =========================================================================
    DabMinesweeper — Notion-inspired interface
    Light is the reference theme; [data-theme='dark'] maps the same semantic
-   roles onto Notion's navy/neutral dark palette. The board tiles are
-   deliberately untouched: gradients, bevels, press feedback and number
-   colours keep their original values in both themes.
+   roles onto a neutral dark palette. The board tiles are deliberately
+   untouched: gradients, bevels, press feedback and number colours keep their
+   original values in both themes.
    ========================================================================= */
 :root {
   color-scheme: light;
@@ -16,23 +16,18 @@
   --content-max: 1120px;
 
   /* Notion brand */
-  --navy: #0a1530;
-  --navy-deep: #070f24;
   --primary: #5645d4;
   --primary-hover: #4534b3;
   --primary-active: #3a2a99;
   --on-primary: #ffffff;
-  --link: #0075de;
 
   /* Surfaces */
   --canvas: #ffffff;
   --panel: #ffffff;
   --nav-bg: rgba(255, 255, 255, 0.92);
   --surface: #f6f5f4;
-  --surface-soft: #fafaf9;
   --tint-gray: #f0eeec;
   --hairline: #e5e3df;
-  --hairline-soft: #ede9e4;
   --hairline-strong: #c8c4be;
 
   /* Ink */
@@ -41,40 +36,31 @@
   --text-secondary: #5d5b54;
   --text-tertiary: #787671;
   --text-faint: #a4a097;
-  --on-dark: #ffffff;
-  --on-dark-muted: #a4a097;
 
   /* Pastel tints */
   --lavender: #e6e0f5;
   --lavender-line: #d6b6f6;
   --lavender-ink: #391c57;
-  --peach: #ffe8d4;
   --rose: #fde0ec;
   --mint: #d9f3e1;
   --sky: #dcecfa;
   --sky-ink: #0a1530;
-  --yellow: #fef7d6;
-  --bold-yellow: #f9e79f;
 
   /* Semantic */
   --success: #1aae39;
   --success-soft: rgba(26, 174, 57, 0.16);
   --danger: #e03131;
-  --warning: #dd5b00;
   --focus: var(--primary);
 
   /* Elevation */
-  --shadow-1: rgba(15, 15, 15, 0.04) 0 1px 2px;
   --shadow-2: rgba(15, 15, 15, 0.08) 0 4px 12px;
-  --shadow-3: rgba(15, 15, 15, 0.2) 0 24px 48px -8px;
+  --shadow-4: rgba(15, 15, 15, 0.16) 0 16px 48px -8px;
 
   /* Geometry */
   --radius-xs: 4px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-full: 9999px;
 
   /* Segmented tabs */
   --tab-active-bg: #1a1a1a;
@@ -116,10 +102,8 @@
   --panel: #171717;
   --nav-bg: rgba(10, 10, 10, 0.9);
   --surface: #171717;
-  --surface-soft: #262626;
   --tint-gray: #262626;
   --hairline: #262626;
-  --hairline-soft: #262626;
   --hairline-strong: #404040;
 
   --ink: #fafafa;
@@ -136,23 +120,18 @@
   --lavender: rgba(123, 63, 242, 0.18);
   --lavender-line: rgba(214, 182, 246, 0.45);
   --lavender-ink: #d6b6f6;
-  --peach: rgba(255, 232, 212, 0.14);
   --rose: rgba(255, 100, 200, 0.16);
   --mint: rgba(26, 174, 57, 0.16);
   --sky: rgba(0, 117, 222, 0.18);
   --sky-ink: #dcecfa;
-  --yellow: rgba(249, 231, 159, 0.14);
-  --bold-yellow: rgba(249, 231, 159, 0.6);
 
   --success: #4ade80;
   --success-soft: rgba(74, 222, 128, 0.18);
   --danger: #ff7a7a;
-  --warning: #ffa94d;
   --focus: #d6b6f6;
 
-  --shadow-1: rgba(0, 0, 0, 0.32) 0 1px 2px;
   --shadow-2: rgba(0, 0, 0, 0.4) 0 4px 12px;
-  --shadow-3: rgba(0, 0, 0, 0.55) 0 24px 48px -8px;
+  --shadow-4: rgba(0, 0, 0, 0.6) 0 16px 48px -8px;
 
   --tab-active-bg: #fafafa;
   --tab-active-text: #0a0a0a;
@@ -507,151 +486,80 @@ button {
 }
 
 /* =========================================================================
-   Hero band
+   Custom board modal
    ========================================================================= */
-.page-hero {
-  position: relative;
-  width: 100%;
-  min-height: 142px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  overflow: hidden;
-  padding: 24px 32px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--navy-deep);
-  background-color: var(--navy);
-  background-image:
-    radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1.5px),
-    radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.5px);
-  background-size: 26px 26px, 52px 52px;
-  background-position: 0 0, 13px 13px;
-  color: var(--on-dark);
-}
-
-.hero-copy {
-  position: relative;
-  z-index: 1;
-  max-width: 640px;
-}
-
-.hero-eyebrow {
-  margin: 0 0 8px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--on-dark-muted);
-}
-
-.hero-title {
-  margin: 0;
-  font-size: clamp(28px, 3.2vw, 36px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.5px;
-}
-
-.hero-subtitle {
-  margin: 8px 0 0;
-  max-width: 54ch;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--on-dark-muted);
-}
-
-.hero-art {
-  position: relative;
-  width: 220px;
-  height: 108px;
-  flex: none;
-}
-
-.hero-art::before {
-  content: '';
-  position: absolute;
-  inset: 4px 10px 4px 0;
-  border: 1px dashed rgba(255, 255, 255, 0.22);
-  border-radius: 50% 42% 50% 44%;
-  transform: rotate(-6deg);
-}
-
-.hero-art::after {
-  content: '';
-  position: absolute;
-  top: 30px;
-  left: 56px;
-  width: 120px;
-  height: 72px;
-  border: 1px dashed rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-  transform: rotate(14deg);
-}
-
-.hero-note {
-  position: absolute;
-  z-index: 1;
-  width: 46px;
-  height: 46px;
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-2);
-}
-
-.hero-note-peach {
-  top: 4px;
-  left: 12px;
-  background: #ffe8d4;
-  transform: rotate(-8deg);
-}
-
-.hero-note-rose {
-  top: 40px;
-  left: 74px;
-  background: #fde0ec;
-  transform: rotate(4deg);
-}
-
-.hero-note-mint {
-  top: 8px;
-  left: 136px;
-  background: #d9f3e1;
-  transform: rotate(9deg);
-}
-
-.hero-note-yellow {
-  top: 62px;
-  left: 160px;
-  width: 38px;
-  height: 38px;
-  background: #f9e79f;
-  transform: rotate(-5deg);
-}
-
-/* =========================================================================
-   Custom game form
-   ========================================================================= */
-.custom-form {
-  width: 100%;
-  max-width: var(--content-max);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 16px 18px;
-  border-radius: var(--radius-lg);
+.modal {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
   border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
   background: var(--panel);
-  box-shadow: var(--shadow-1);
-  animation: slide-down 0.22s ease-out;
+  color: var(--text);
+  box-shadow: var(--shadow-4);
+  animation: modal-in 0.18s ease-out;
 }
 
-.custom-fields {
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* The page behind a modal should not scroll under it. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+}
+
+.modal-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.modal-subtitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.modal-fields {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
+}
+
+.modal-fields .field {
+  flex: 1 1 120px;
+}
+
+.modal-hint {
+  min-height: 18px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .field {
@@ -702,27 +610,6 @@ button {
   color: var(--danger);
 }
 
-.custom-actions {
-  display: flex;
-  flex: 1 1 260px;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.custom-hint {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--text-tertiary);
-  text-align: right;
-}
-
-.custom-buttons {
-  display: flex;
-  gap: 8px;
-}
-
 /* =========================================================================
    Game panel + HUD
    ========================================================================= */
@@ -730,7 +617,9 @@ button {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: fit-content;
+  /* Spans the same content column as the header, so the board's frame lines up
+     with the navigation above it. */
+  width: 100%;
   max-width: 100%;
   padding: clamp(12px, 2vw, 18px);
   border-radius: var(--radius-lg);
@@ -947,8 +836,13 @@ button {
 .board {
   display: grid;
   grid-template-columns: repeat(var(--cols), var(--cell));
-  gap: var(--gap);
+  /* Fills the panel when the tiles are narrower, so the frame lines up with the
+     header; grows past it when they are not, so the frame always wraps the tiles
+     and the scrollable overflow stays reachable from the left. */
   width: max-content;
+  min-width: 100%;
+  justify-content: center;
+  gap: var(--gap);
   margin-inline: auto;
   padding: var(--board-pad);
   border-radius: var(--radius-md);
@@ -1205,9 +1099,9 @@ kbd {
   }
 }
 
-@keyframes slide-down {
+@keyframes modal-in {
   from {
-    transform: translateY(-6px);
+    transform: translateY(6px) scale(0.98);
     opacity: 0;
   }
   to {
@@ -1237,40 +1131,6 @@ kbd {
 
   .difficulty-best {
     display: none;
-  }
-
-  .custom-form {
-    align-items: stretch;
-  }
-
-  .custom-actions {
-    align-items: stretch;
-  }
-
-  .custom-hint {
-    text-align: left;
-  }
-
-  .custom-buttons {
-    justify-content: flex-end;
-  }
-
-  .page-hero {
-    min-height: 0;
-    padding: 18px 20px;
-  }
-
-  .hero-art {
-    display: none;
-  }
-
-  .hero-title {
-    font-size: 28px;
-  }
-
-  .hero-subtitle {
-    margin-top: 6px;
-    font-size: 13px;
   }
 
   .footer-hint {
@@ -1319,14 +1179,6 @@ kbd {
   .icon-button {
     order: 3;
   }
-
-  .hero-eyebrow {
-    display: none;
-  }
-
-  .hero-title {
-    font-size: 24px;
-  }
 }
 
 /* Compact chrome when vertical room is tight (short windows) or when the screen
@@ -1344,21 +1196,6 @@ kbd {
   .keyboard-hints,
   .app-footer {
     display: none;
-  }
-
-  .page-hero {
-    min-height: 0;
-    padding: 10px 20px;
-  }
-
-  .hero-art,
-  .hero-eyebrow,
-  .hero-subtitle {
-    display: none;
-  }
-
-  .hero-title {
-    font-size: 24px;
   }
 
   .game-panel {

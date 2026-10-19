@@ -50,10 +50,12 @@ count, and per-difficulty records are all live.
 
 ## Design
 
-The interface is Notion-inspired: an Inter/Notion Sans type stack, a navy hero band
-with dotted texture and pastel sticky notes, a purple primary call to action, pastel
-status tags, hairline borders, 8px buttons and 12px cards, and 44px inputs with a
-2px purple focus border.
+The interface is Notion-inspired: an Inter/Notion Sans type stack, a sticky navigation
+bar with a segmented difficulty control, a purple primary call to action, pastel status
+tags, hairline borders, 8px buttons and 12px cards. The game panel spans the same content
+column as the header, so the board's frame lines up with the navigation, and custom boards
+open in a modal dialog with 44px inputs and a 2px purple focus border. The copyright year
+is read from the real clock at load time.
 
 The board tiles are deliberately **not** restyled. Cell gradients, bevels, press
 feedback, flag/mine artwork, number colours and the wrong-flag cross keep their
