@@ -128,7 +128,7 @@ export function Game({ config, difficulty, bestTime, onWin }: GameProps) {
           <span className="hint-touch">Long-press to flag · tap an open number to chord</span>
         </p>
 
-        <button type="button" className="button button-ghost" onClick={reset} title="New game (R)">
+        <button type="button" className="button button-primary" onClick={reset} title="New game (R)">
           <RestartIcon className="button-icon" />
           New game
         </button>

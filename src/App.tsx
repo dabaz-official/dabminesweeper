@@ -63,47 +63,61 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="ambient" aria-hidden="true" />
-
       <header className="app-header">
-        <div className="brand">
-          <span className="brand-mark">
-            <MineIcon className="brand-icon" />
-          </span>
-          <span className="brand-text">
+        <div className="app-header-inner">
+          <div className="brand">
+            <span className="brand-mark">
+              <MineIcon className="brand-icon" />
+            </span>
             <h1 className="brand-title">Minesweeper</h1>
-            <p className="brand-tagline">Clear every safe tile. Mind the boom.</p>
-          </span>
-        </div>
+          </div>
 
-        <div className="header-controls">
-          <DifficultyPicker active={difficulty} bestTimes={bestTimes} onSelect={selectPreset} />
-          <button
-            type="button"
-            className={`button button-outline custom-trigger${customOpen ? ' is-open' : ''}`}
-            aria-expanded={customOpen}
-            onClick={() => setCustomOpen((open) => !open)}
-          >
-            <SlidersIcon className="button-icon" />
-            Custom
-          </button>
-          <button
-            type="button"
-            className="icon-button"
-            onClick={toggleTheme}
-            aria-label={themeLabel}
-            title={themeLabel}
-          >
-            {isLight ? (
-              <MoonIcon className="icon-button-glyph" />
-            ) : (
-              <SunIcon className="icon-button-glyph" />
-            )}
-          </button>
+          <div className="header-controls">
+            <DifficultyPicker active={difficulty} bestTimes={bestTimes} onSelect={selectPreset} />
+            <button
+              type="button"
+              className={`button button-secondary custom-trigger${customOpen ? ' is-open' : ''}`}
+              aria-expanded={customOpen}
+              onClick={() => setCustomOpen((open) => !open)}
+            >
+              <SlidersIcon className="button-icon" />
+              Custom
+            </button>
+            <button
+              type="button"
+              className="icon-button"
+              onClick={toggleTheme}
+              aria-label={themeLabel}
+              title={themeLabel}
+            >
+              {isLight ? (
+                <MoonIcon className="icon-button-glyph" />
+              ) : (
+                <SunIcon className="icon-button-glyph" />
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="app-main">
+        <section className="page-hero">
+          <div className="hero-copy">
+            <p className="hero-eyebrow">The classic, recalibrated</p>
+            <p className="hero-title">Clear the board. Keep your calm.</p>
+            <p className="hero-subtitle">
+              Three difficulties, custom fields and a board that always fits. Your first click is
+              always safe.
+            </p>
+          </div>
+          <div className="hero-art" aria-hidden="true">
+            <span className="hero-note hero-note-peach" />
+            <span className="hero-note hero-note-rose" />
+            <span className="hero-note hero-note-mint" />
+            <span className="hero-note hero-note-yellow" />
+          </div>
+        </section>
+
         {customOpen ? (
           <CustomForm
             initial={customSeed}
@@ -132,7 +146,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        Built with Vite · React · TypeScript — no game libraries, just a shuffled array
+        Notion-inspired interface — built with Vite, React and TypeScript
       </footer>
     </div>
   )

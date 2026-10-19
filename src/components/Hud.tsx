@@ -19,7 +19,7 @@ function Counter({ label, value, tone }: { label: string; value: string; tone: '
   return (
     <div className={`counter counter-${tone}`}>
       <span className="counter-label">{label}</span>
-      <span className="led" role="img" aria-label={`${label}: ${value}`}>
+      <span className="counter-value" role="img" aria-label={`${label}: ${value}`}>
         {value}
       </span>
     </div>

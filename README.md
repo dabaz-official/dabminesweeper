@@ -48,6 +48,19 @@ count, and per-difficulty records are all live.
   key navigation, live status text, and `prefers-reduced-motion` support.
 - **No backend, no tracking** — the only stored data is your best times and theme.
 
+## Design
+
+The interface is Notion-inspired: an Inter/Notion Sans type stack, a navy hero band
+with dotted texture and pastel sticky notes, a purple primary call to action, pastel
+status tags, hairline borders, 8px buttons and 12px cards, and 44px inputs with a
+2px purple focus border.
+
+The board tiles are deliberately **not** restyled. Cell gradients, bevels, press
+feedback, flag/mine artwork, number colours and the wrong-flag cross keep their
+original values in both themes, so the board still feels like the classic game while
+everything around it does not. `src/index.css` marks that preserved block with a
+comment, and the light/dark token sets carry the original cell values.
+
 ## Project layout
 
 ```
