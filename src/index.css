@@ -141,6 +141,9 @@
 html,
 body {
   margin: 0;
+  /* No elastic bounce or scroll chaining: the board must not shift under the
+     wheel, wherever the pointer happens to be. */
+  overscroll-behavior: none;
 }
 
 body {
@@ -718,6 +721,9 @@ button {
 .board-wrap {
   min-width: 0;
   max-width: 100%;
+  /* Capped to the room actually available so the page never scrolls vertically;
+     an oversized board scrolls inside this frame instead of moving the page. */
+  max-height: var(--board-max-h, none);
   padding: 4px;
   border-radius: 18px;
   overflow: auto;

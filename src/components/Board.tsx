@@ -10,11 +10,32 @@ interface BoardProps {
 
 const CELL_GAP = 2
 const BOARD_PADDING = 12
-const MIN_CELL = 20
+const WRAP_PADDING = 4
+/**
+ * Cell size floors. The width floor keeps cells tappable and lets narrow screens
+ * scroll sideways; the height floor is lower so a tall board shrinks to fit
+ * rather than gaining a vertical scrollbar (vertical movement inside the frame is
+ * exactly what the fixed frame exists to avoid).
+ */
+const MIN_CELL_WIDTH = 20
+const MIN_CELL_HEIGHT = 16
 const MAX_CELL = 42
 /** Panel + wrap + board padding, plus a little slack. */
 const HORIZONTAL_CHROME = 2 * 18 + 2 * 4 + 2 * BOARD_PADDING + 6
 const SLACK = 8
+/** Never collapse the board frame to nothing, even on absurdly short windows. */
+const MIN_WRAP_HEIGHT = 120
+
+interface BoardMetrics {
+  cellSize: number
+  /**
+   * Height cap for the frame around the board. Keeping the frame inside the
+   * viewport means the page itself never needs to scroll, so wheel scrolling
+   * cannot drag the board up and down. Boards too big to fit at a usable cell
+   * size scroll inside this frame instead.
+   */
+  wrapMaxHeight: number
+}
 
 function elementHeight(element: Element | null | undefined, fallback: number): number {
   return element instanceof HTMLElement ? element.offsetHeight : fallback
@@ -65,10 +86,13 @@ function measureBottomChrome(wrap: HTMLElement | null): number {
  * Cells are sized to the space the board actually has: the column width for
  * horizontal room, and the distance from the board's top edge to the bottom of
  * the viewport (minus everything below it) for vertical room. Measuring the top
- * edge instead of assuming a chrome height keeps the whole game on screen.
+ * edge instead of assuming a chrome height keeps the whole game on screen, and
+ * the same measurement caps the board frame so the page never overflows.
  */
-function computeCellSize(rows: number, cols: number, wrap: HTMLElement | null): number {
-  if (typeof window === 'undefined') return MAX_CELL
+function measureBoard(rows: number, cols: number, wrap: HTMLElement | null): BoardMetrics {
+  if (typeof window === 'undefined') {
+    return { cellSize: MAX_CELL, wrapMaxHeight: Number.POSITIVE_INFINITY }
+  }
 
   const column = wrap?.closest('.app-main') as HTMLElement | null
   const columnWidth = column?.clientWidth ?? window.innerWidth - 40
@@ -76,18 +100,24 @@ function computeCellSize(rows: number, cols: number, wrap: HTMLElement | null): 
 
   const wrapTop = wrap?.getBoundingClientRect().top ?? window.innerHeight * 0.55
   const availableHeight = window.innerHeight - wrapTop - measureBottomChrome(wrap)
+  const wrapMaxHeight = Math.max(MIN_WRAP_HEIGHT, availableHeight)
+  const boardBudget = wrapMaxHeight - WRAP_PADDING * 2
 
-  const byWidth = (availableWidth - (cols - 1) * CELL_GAP) / cols
-  const byHeight = (availableHeight - BOARD_PADDING * 2 - (rows - 1) * CELL_GAP) / rows
-  const size = Math.floor(Math.min(byWidth, byHeight))
-  return Math.max(MIN_CELL, Math.min(MAX_CELL, size))
+  const byWidth = Math.max(MIN_CELL_WIDTH, (availableWidth - (cols - 1) * CELL_GAP) / cols)
+  const byHeight = Math.max(
+    MIN_CELL_HEIGHT,
+    (boardBudget - BOARD_PADDING * 2 - (rows - 1) * CELL_GAP) / rows,
+  )
+  const size = Math.floor(Math.min(byWidth, byHeight, MAX_CELL))
+
+  return { cellSize: size, wrapMaxHeight }
 }
 
-function useCellSize(rows: number, cols: number, wrapRef: RefObject<HTMLDivElement | null>): number {
-  const [size, setSize] = useState(() => computeCellSize(rows, cols, null))
+function useBoardMetrics(rows: number, cols: number, wrapRef: RefObject<HTMLDivElement | null>): BoardMetrics {
+  const [metrics, setMetrics] = useState(() => measureBoard(rows, cols, null))
 
   useEffect(() => {
-    const update = () => setSize(computeCellSize(rows, cols, wrapRef.current))
+    const update = () => setMetrics(measureBoard(rows, cols, wrapRef.current))
     update()
     window.addEventListener('resize', update)
     window.addEventListener('orientationchange', update)
@@ -105,17 +135,37 @@ function useCellSize(rows: number, cols: number, wrapRef: RefObject<HTMLDivEleme
     }
   }, [rows, cols, wrapRef])
 
-  return size
+  return metrics
 }
 
 export function Board({ board, onPrimary, onFlag }: BoardProps) {
   const { rows, cols, cells, status } = board
   const wrapRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
-  const cellSize = useCellSize(rows, cols, wrapRef)
+  const { cellSize, wrapMaxHeight } = useBoardMetrics(rows, cols, wrapRef)
   // Roving tabindex: one cell is in the tab order, and it follows the user. It is
   // deliberately not reset by a new game, so keyboard focus survives a restart.
   const [focusIndex, setFocusIndex] = useState(0)
+
+  /**
+   * The wheel must never shift the board vertically. The frame is capped so the
+   * page cannot scroll, and this stops the wheel from scrolling the board inside
+   * its own frame too — an oversized board is reached by dragging its scrollbar,
+   * by touch, or by keyboard focus (which scrolls the focused cell into view).
+   * Horizontal deltas still pan a board that is wider than its frame.
+   *
+   * Registered natively because React attaches onWheel passively, which makes
+   * preventDefault() a no-op.
+   */
+  useEffect(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const handleWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.preventDefault()
+    }
+    wrap.addEventListener('wheel', handleWheel, { passive: false })
+    return () => wrap.removeEventListener('wheel', handleWheel)
+  }, [])
 
   const handlePrimary = useCallback(
     (index: number) => {
@@ -186,10 +236,11 @@ export function Board({ board, onPrimary, onFlag }: BoardProps) {
     '--cell': `${cellSize}px`,
     '--gap': `${CELL_GAP}px`,
     '--board-pad': `${BOARD_PADDING}px`,
+    '--board-max-h': `${wrapMaxHeight}px`,
   } as CSSProperties
 
   return (
-    <div className="board-wrap" ref={wrapRef}>
+    <div className="board-wrap" ref={wrapRef} style={style}>
       <div
         ref={boardRef}
         className={`board board-${status}`}
