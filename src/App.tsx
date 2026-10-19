@@ -10,6 +10,9 @@ import { useTheme } from './hooks/useTheme'
 
 const DEFAULT_CUSTOM: GameConfig = { rows: 12, cols: 12, mines: 24 }
 
+/** Read from the real clock when the app loads, so the copyright needs no editing. */
+const CURRENT_YEAR = new Date().getFullYear()
+
 export default function App() {
   const { theme, toggle: toggleTheme } = useTheme()
   const [difficulty, setDifficulty] = useState<DifficultyKey>('beginner')
@@ -63,55 +66,48 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="ambient" aria-hidden="true" />
-
       <header className="app-header">
-        <div className="brand">
-          <span className="brand-mark">
-            <MineIcon className="brand-icon" />
-          </span>
-          <span className="brand-text">
+        <div className="app-header-inner">
+          <div className="brand">
+            <span className="brand-mark">
+              <MineIcon className="brand-icon" />
+            </span>
             <h1 className="brand-title">Minesweeper</h1>
-            <p className="brand-tagline">Clear every safe tile. Mind the boom.</p>
-          </span>
-        </div>
+          </div>
 
-        <div className="header-controls">
-          <DifficultyPicker active={difficulty} bestTimes={bestTimes} onSelect={selectPreset} />
-          <button
-            type="button"
-            className={`button button-outline custom-trigger${customOpen ? ' is-open' : ''}`}
-            aria-expanded={customOpen}
-            onClick={() => setCustomOpen((open) => !open)}
-          >
-            <SlidersIcon className="button-icon" />
-            Custom
-          </button>
-          <button
-            type="button"
-            className="icon-button"
-            onClick={toggleTheme}
-            aria-label={themeLabel}
-            title={themeLabel}
-          >
-            {isLight ? (
-              <MoonIcon className="icon-button-glyph" />
-            ) : (
-              <SunIcon className="icon-button-glyph" />
-            )}
-          </button>
+          <div className="header-controls">
+            <DifficultyPicker active={difficulty} bestTimes={bestTimes} onSelect={selectPreset} />
+            <button
+              type="button"
+              className={`button button-secondary custom-trigger${customOpen ? ' is-open' : ''}`}
+              aria-haspopup="dialog"
+              onClick={() => setCustomOpen(true)}
+            >
+              <SlidersIcon className="button-icon" />
+              Custom
+            </button>
+            <button
+              type="button"
+              className="icon-button"
+              onClick={toggleTheme}
+              aria-label={themeLabel}
+              title={themeLabel}
+            >
+              {isLight ? (
+                <MoonIcon className="icon-button-glyph" />
+              ) : (
+                <SunIcon className="icon-button-glyph" />
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="app-main">
-        {customOpen ? (
-          <CustomForm
-            initial={customSeed}
-            onApply={applyCustom}
-            onCancel={() => setCustomOpen(false)}
-          />
-        ) : null}
+      {customOpen ? (
+        <CustomForm initial={customSeed} onApply={applyCustom} onCancel={() => setCustomOpen(false)} />
+      ) : null}
 
+      <main className="app-main">
         <Game
           key={gameKey}
           config={config}
@@ -131,9 +127,7 @@ export default function App() {
         </p>
       </main>
 
-      <footer className="app-footer">
-        Built with Vite · React · TypeScript — no game libraries, just a shuffled array
-      </footer>
+      <footer className="app-footer">© {CURRENT_YEAR} DabAZ.</footer>
     </div>
   )
 }
